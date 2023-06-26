@@ -479,54 +479,67 @@ session_start();
 
                         <div class="home-product">
                             <div class="row sm-gutter">
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
+                                <?php
+                                require_once('./assets/php/clsProduct.php');
+                                $product = new clsProduct();
+                                $ketqua = $product->getList();
+                                if ($ketqua == FALSE)
+                                    die("<p>LỖI TRUY VẤN DỮ LIỆU</p>");
+                                $rows = $product->data;
+                                if ($rows == NULL)
+                                    die("<p> KHÔNG CÓ DỮ LIỆU </p>");
+                                foreach ($rows as $row) //lặp từng dòng
+                                {
+                                    $hinhanh = $row["pimage"] == "" ? "no-image.png" : $row["pimage"];
+                                ?>
+                                    <div class="col l-2-4 m-4 c-6">
+                                        <a class="home-product-item" href="#">
+                                            <div class="home-product-item__img" style="
+                                                    background-image: url(./assets/img/<?= $row['pimage'] ?>);
                                                 "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
+                                            <h4 class="home-product-item__name">
+                                                <?= $row['pname'] ?>
+                                            </h4>
+                                            <div class="home-product-item__price">
+                                                <span class="home-product-item__price-old">1.200.000đ</span>
+                                                <span class="home-product-item__price-current"><?= $row['pprice'] ?></span>
                                             </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
+                                            <div class="home-product-item__action">
+                                                <span class="home-product-item__action-like home-product-item__action-like--liked">
+                                                    <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
+                                                    <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
+                                                </span>
+                                                <span class="home-product-item__action-rating">
+                                                    <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                    <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                    <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                    <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                </span>
+                                                <span class="home-product-item__sold">88 đã bán</span>
                                             </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
+                                            <div class="home-product-item__origin">
+                                                <div class="home-product-item__brand">
+                                                    Ohui
+                                                </div>
+                                                <div class="home-product-item__origin-name">
+                                                    Hàn Quốc
+                                                </div>
+                                            </div>
+                                            <div class="home-product-item__favourite">
+                                                <i class="fa-solid fa-check"></i>
+                                                <span>Yêu thích</span>
+                                            </div>
+                                            <div class="home-product-item__sale">
+                                                <span class="home-product-item__sale-percent">20%
+                                                </span>
+                                                <span class="home-product-item__sale-label">GIẢM</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php } ?>
 
-                                <div class="col l-2-4 m-4 c-6">
+                                <!-- <div class="col l-2-4 m-4 c-6">
                                     <a class="home-product-item" href="#">
                                         <div class="home-product-item__img" style="
                                                     background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
@@ -571,383 +584,7 @@ session_start();
                                             <span class="home-product-item__sale-label">GIẢM</span>
                                         </div>
                                     </a>
-                                </div>
-
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
-                                                "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
-                                            </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
-                                            </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
-
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
-                                                "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
-                                            </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
-                                            </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
-
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
-                                                "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
-                                            </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
-                                            </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
-
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
-                                                "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
-                                            </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
-                                            </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
-
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
-                                                "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
-                                            </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
-                                            </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
-
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
-                                                "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
-                                            </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
-                                            </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
-
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
-                                                "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
-                                            </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
-                                            </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
-
-                                <div class="col l-2-4 m-4 c-6">
-                                    <a class="home-product-item" href="#">
-                                        <div class="home-product-item__img" style="
-                                                    background-image: url(https://cf.shopee.vn/file/97a6094b261be4702822c89b1487986c_tn);
-                                                "></div>
-                                        <h4 class="home-product-item__name">
-                                            Tẩy Tế Bào Chết Làm Sáng Da Ohui
-                                            Clear Science
-                                        </h4>
-                                        <div class="home-product-item__price">
-                                            <span class="home-product-item__price-old">1.200.000đ</span>
-                                            <span class="home-product-item__price-current">900.000đ</span>
-                                        </div>
-                                        <div class="home-product-item__action">
-                                            <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                            </span>
-                                            <span class="home-product-item__action-rating">
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            <span class="home-product-item__sold">88 đã bán</span>
-                                        </div>
-                                        <div class="home-product-item__origin">
-                                            <div class="home-product-item__brand">
-                                                Ohui
-                                            </div>
-                                            <div class="home-product-item__origin-name">
-                                                Hàn Quốc
-                                            </div>
-                                        </div>
-                                        <div class="home-product-item__favourite">
-                                            <i class="fa-solid fa-check"></i>
-                                            <span>Yêu thích</span>
-                                        </div>
-                                        <div class="home-product-item__sale">
-                                            <span class="home-product-item__sale-percent">20%
-                                            </span>
-                                            <span class="home-product-item__sale-label">GIẢM</span>
-                                        </div>
-                                    </a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 

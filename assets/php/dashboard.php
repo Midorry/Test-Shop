@@ -14,7 +14,7 @@ session_start();
     <div class="form">
         <p>Hey, <?php echo $_SESSION['image']; ?>!</p>
         <p>You are now user dashboard page.</p>
-        <p><a href="../../login.html">Logout</a></p>
+        <p><a href="../../login.php">Logout</a></p>
     </div>
 </body>
 

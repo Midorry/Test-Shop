@@ -15,7 +15,7 @@
 <body>
     <div class="main">
         <div class="heading">Đăng ký thành viên</div>
-        <form class="form" name="demo" id="form-1" action="./assets/php/registration.php" method="post">
+        <form class="form" name="demo" id="form-1" action="./assets/php/registration.php" enctype="multipart/form-data" method="post">
             <div class="form-group">
                 <label for="name">Tên đầy đủ</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="VD: Tran Tam" onkeyup="myFun()" />
@@ -28,25 +28,27 @@
             </div>
             <div class="form-group">
                 <label for="name">Mật khẩu</label>
-                <input type="text" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" onkeyup="myFun()" />
+                <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" onkeyup="myFun()" />
                 <span class="notify2"></span>
             </div>
             <div class="form-group">
                 <label for="name">Nhập lại mật khẩu</label>
-                <input type="text" class="form-control" id="repassword" name="repassword" placeholder="Nhập lại mật khẩu" onkeyup="myFun()" />
+                <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Nhập lại mật khẩu" onkeyup="myFun()" />
                 <span class="notify3"></span>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="agree" name="agree" onchange="myFun()" />
-                <label for="agree">Check</label>
             </div>
             <div class="form-group">
                 <label for="image">Ảnh đại diện</label>
                 <input type="file" id="image" name="image" onchange="myFun()" />
+                <span class="notify4"></span>
+            </div>
+            <div class="form-group">
+                <label for="agree">Check</label>
+                <input type="checkbox" id="agree" name="agree" onchange="myFun()" />
             </div>
             <!-- <div class="input-btn"> -->
             <input type="submit" id="submit" value="Đăng ký" class="submit-btn" onclick="myFun()" disabled />
             <!-- </div> -->
+            <a href="./login.php">Đăng nhập</a>
         </form>
     </div>
     <script>
@@ -56,15 +58,18 @@
             const submit = document.getElementById("submit");
             const password = document.getElementById("password");
             const checkPassword = document.getElementById("repassword");
+            const image = document.getElementById("image");
             const pop_up = document.querySelector(".notify");
             const pop_up1 = document.querySelector(".notify1");
             const pop_up2 = document.querySelector(".notify2");
             const pop_up3 = document.querySelector(".notify3");
+            const pop_up4 = document.querySelector(".notify4");
             check = () => {
                 let isName = false;
                 let isEmail = false;
                 let isPass = false;
                 let isCheckPass = false;
+                let isImage = false;
                 checkEmail = () => {
                     if (email.value == "") {
                         isEmail = false;
@@ -130,6 +135,20 @@
                         isCheckPass = false;
                     }
                 };
+
+                const checkImage = (e) => {
+                    // image.textContent = ""
+                    // console.log(e.target.files.length);
+                    if (image.files.length == 0) {
+                        pop_up4.innerHTML = "Chua nhap anh dai dien";
+                        pop_up4.style.color = "red";
+                        isImage = false;
+                    } else {
+                        pop_up4.innerHTML = "OK";
+                        pop_up4.style.color = "green";
+                        isImage = true;
+                    }
+                }
                 checkAgree = () => {
                     const form = document.forms.demo;
                     const checked = form.querySelector(
@@ -137,6 +156,7 @@
                     );
                     if (
                         checked == null ||
+                        !isImage ||
                         !isName ||
                         !isEmail ||
                         !isPass ||
@@ -152,6 +172,7 @@
                     checkEmail();
                     checkPass();
                     reCheckPassword();
+                    checkImage();
                     checkAgree();
                 };
                 start();

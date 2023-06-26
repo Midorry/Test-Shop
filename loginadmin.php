@@ -13,8 +13,8 @@
 
 <body>
     <div class="main">
-        <div class="heading">Đăng nhập</div>
-        <form class="form" id="form-2" action="./assets/php/login.php" method="post">
+        <div class="heading">Đăng nhập Admin</div>
+        <form class="form" id="form-2" action="./assets/php/loginadmin.php" method="post">
             <div class="form-group">
                 <label for="name">Tên đầy đủ</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="VD: Tran Tam" />
@@ -25,11 +25,7 @@
                 <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" />
                 <span class="notify"></span>
             </div>
-            <!-- <div class="input-btn"> -->
             <input type="submit" value="Đăng nhập" class="submit-btn" />
-            <!-- </div> -->
-            <a href="./form_validation.php">Đăng ký</a>
-            <a href="./loginadmin.php">Đăng nhập Admin Panel</a>
         </form>
     </div>
 </body>
