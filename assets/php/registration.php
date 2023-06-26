@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once('clsDatabase.php');
-// When form submitted, insert values into the database.
 class Register extends clsDatabase
 {
     public $data;
@@ -22,12 +21,8 @@ class Register extends clsDatabase
 if (isset($_REQUEST['username'])) {
 
     $username = $_REQUEST['username'];
-    //escapes special characters in a string
-    // $username = mysqli_real_escape_string($con, $username);
     $email    = stripslashes($_REQUEST['email']);
-    // $email    = mysqli_real_escape_string($con, $email);
     $password = stripslashes($_REQUEST['password']);
-    // $password = mysqli_real_escape_string($con, $password);
     $create_datetime = date("Y-m-d H:i:s");
     $image = $_REQUEST['image'];
     $account = new Register;
