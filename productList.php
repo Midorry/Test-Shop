@@ -10,7 +10,7 @@
 
 <body>
   <h1 style="text-align: center; color: #090;">DANH SÁCH SẢN PHẨM</h1>
-  <p><a href="ThemSP.php">THÊM SẢN PHẨM</a></p>
+  <p><a href="addProduct.php">THÊM SẢN PHẨM</a></p>
   <?php
   require_once("./assets/php/clsProduct.php");
   ?>
@@ -45,9 +45,9 @@
         <td><?= $row["pstatus"] == 1 ? "Có" : "Không" ?></td>
         <td><?= $row["catname"] ?></td>
         <td>
-          <a href="SuaSP.php?id=<?= $row["pid"] ?>">Sửa</a>
+          <a href="changeProduct.php?pid=<?= $row["pid"] ?>">Sửa</a>
           -
-          <a href="XoaSP.php?id=<?= $row["pid"] ?>" onclick="return confirm('Chắc chắn xóa?')">Xóa</a>
+          <a href="./assets/php/deleteProduct.php?pid=<?= $row["pid"] ?>" onclick="return confirm('Chắc chắn xóa?')">Xóa</a>
         </td>
       </tr>
     <?php

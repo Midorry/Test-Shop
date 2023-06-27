@@ -29,17 +29,17 @@ class clsProduct extends clsDatabase
         }
         return $ketqua;
     }
-    function Add($pname, $pprice, $pimage, $pdecs, $pstatus, $catid)
+    function Add($pname, $pprice, $pimage, $pdesc, $pstatus, $catid)
     {
-        $sql = "Insert into tbProduct values(null,?,?,?,?,?,?)";
-        $param = [$pname, $pprice, $pimage, $pdecs, $pstatus, $catid];
+        $sql = "INSERT into tbProduct values(null,?,?,?,?,?,?)";
+        $param = [$pname, $pprice, $pimage, $pdesc, $pstatus, $catid];
         $ketqua = $this->RunSQL($sql, $param); //goi ham thuc thi SQL ke thua tu clsDatabase
         return $ketqua;
     }
-    function Update($pid, $pname, $pprice, $pimage, $pdecs, $pstatus, $catid)
+    function Update($pid, $pname, $pprice, $pimage, $pdesc, $pstatus, $catid)
     {
-        $sql = "Update tbProduct set pname=?, pprice=?, pimage=?, pdecs=?, pstatus=?, catid=? where pid=?";
-        $param = [$pname, $pprice, $pimage, $pdecs, $pstatus, $catid, $pid];
+        $sql = "UPDATE tbProduct set pname=?, pprice=?, pimage=?, pdesc=?, pstatus=?, catid=? where pid=?";
+        $param = [$pname, $pprice, $pimage, $pdesc, $pstatus, $catid, $pid];
         $ketqua = $this->RunSQL($sql, $param); //goi ham thuc thi SQL ke thua tu clsDatabase
         return $ketqua;
     }

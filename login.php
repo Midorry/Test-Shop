@@ -25,9 +25,7 @@
                 <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" />
                 <span class="notify"></span>
             </div>
-            <!-- <div class="input-btn"> -->
             <input type="submit" value="Đăng nhập" class="submit-btn" />
-            <!-- </div> -->
             <a href="./form_validation.php">Đăng ký</a>
             <a href="./loginadmin.php">Đăng nhập Admin Panel</a>
         </form>
