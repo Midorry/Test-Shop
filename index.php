@@ -14,6 +14,7 @@ session_start();
     <link rel="stylesheet" href="./assets/css/grid.css" />
     <link rel="stylesheet" href="./assets/css/responsive.css" />
     <link rel="stylesheet" href="./assets/fonts/Roboto" />
+    <script src="./assets/js/handleAdd.js"></script>
     <link rel="stylesheet" href="./assets/fonts/fontawesome-free-6.2.0-web/css/all.css" />
     <title>Document</title>
 </head>
@@ -225,8 +226,9 @@ session_start();
                     </a>
 
                     <div class="header__search">
-                        <div class="header__search-input-wrap">
-                            <input type="text" class="header__search-input" placeholder="Tìm kiếm sản phẩm" />
+                        <!-- <div class="header__search-input-wrap"> -->
+                        <form method="post" action="./assets/php/search.php" class="header__search-input-wrap" style="display: contents;">
+                            <input type="text" name="pname" id="pname" class="header__search-input" placeholder="Tìm kiếm sản phẩm" />
 
                             <!-- Search history -->
                             <div class="header__search-history">
@@ -242,8 +244,10 @@ session_start();
                                     </li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="header__search-select">
+                            <input type="submit" value="Search" name="search" id="search" class="header__search-btn" />
+                        </form>
+                        <!-- </div> -->
+                        <!-- <div class="header__search-select">
                             <span class="header__search-select-label">Tùy chọn</span>
                             <i class="header__search-select-icon fa-solid fa-chevron-down"></i>
 
@@ -257,11 +261,10 @@ session_start();
                                     <i class="fa-solid fa-check"></i>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
 
-                        <button class="header__search-btn">
-                            <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
-                        </button>
+
+
                     </div>
 
                     <div class="header__cart">
@@ -371,18 +374,22 @@ session_start();
                         <nav class="category">
                             <h3 class="category-header">Danh mục</h3>
                             <ul class="category-list">
-                                <li class="category-item category-item--active">
-                                    <a href="#" class="category-item__link">
-                                        Mỹ phẩm về mắt</a>
-                                </li>
-                                <li class="category-item">
-                                    <a href="#" class="category-item__link">
-                                        Mỹ phẩm về môi</a>
-                                </li>
-                                <li class="category-item">
-                                    <a href="#" class="category-item__link">
-                                        Mỹ phẩm về mặt</a>
-                                </li>
+                                <?php
+                                require_once('./assets/php/clsCategory.php');
+                                $product = new clsCategory();
+                                $ketqua = $product->getList();
+                                if ($ketqua == FALSE)
+                                    die("<p>LỖI TRUY VẤN DỮ LIỆU</p>");
+                                $rows = $product->data;
+                                if ($rows == NULL)
+                                    die("<p> KHÔNG CÓ DỮ LIỆU </p>");
+                                for ($i = 0; $i < sizeof($rows); $i++) {
+                                ?>
+                                    <li class="category-item category-item--active">
+                                        <a href="./index.php?id=<?= $rows[$i]['catid'] ?>" class="category-item__link">
+                                            <?= $rows[$i]['catname'] ?></a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </nav>
                     </div>
@@ -482,62 +489,174 @@ session_start();
                                 <?php
                                 require_once('./assets/php/clsProduct.php');
                                 $product = new clsProduct();
+                                $sprod = new clsProduct();
                                 $ketqua = $product->getList();
-                                if ($ketqua == FALSE)
+                                $result = $sprod->getListByName($_SESSION['name_prod']);
+                                if ($ketqua == FALSE && $result == FALSE)
                                     die("<p>LỖI TRUY VẤN DỮ LIỆU</p>");
                                 $rows = $product->data;
-                                if ($rows == NULL)
+                                $list = $sprod->data;
+                                if ($rows == NULL && $list == NULL) {
                                     die("<p> KHÔNG CÓ DỮ LIỆU </p>");
-                                foreach ($rows as $row) //lặp từng dòng
-                                {
-                                    $hinhanh = $row["pimage"] == "" ? "no-image.png" : $row["pimage"];
+                                }
+                                if ($_SESSION['name_prod'] != NULL) {
+                                    // echo $row[0]['pname'];
+                                    foreach ($list as $item) {
                                 ?>
-                                    <div class="col l-2-4 m-4 c-6">
-                                        <a class="home-product-item" href="#">
-                                            <div class="home-product-item__img" style="
+                                        <div class="col l-2-4 m-4 c-6">
+                                            <a class="home-product-item" href="#" style="padding-bottom: 10px;">
+                                                <div class="home-product-item__img" style="
+                                                    background-image: url(./assets/img/<?= $item['pimage'] ?>);
+                                                "></div>
+                                                <h4 class="home-product-item__name">
+                                                    <?= $item['pname'] ?>
+                                                </h4>
+                                                <div class="home-product-item__price">
+                                                    <span class="home-product-item__price-old">1.200.000đ</span>
+                                                    <span class="home-product-item__price-current"><?= $item['pprice'] ?></span>
+                                                </div>
+                                                <div class="home-product-item__action">
+                                                    <form action="./assets/php/addCart.php" method="post">
+
+                                                        <input type="submit" name="addcart" id="addcart" value="Them" class="home-product-item__action-like home-product-item__action-like--liked add" style="cursor: pointer;">
+                                                        <!-- <i class="home-product-item__action-like fa-solid fa-cart-shopping" style="color: aqua; font-size: 2rem;"></i> -->
+                                                        </input>
+                                                        <input type="hidden" name="pname" value="<?php echo $item['pname'] ?>">
+                                                        <input type="hidden" name="pprice" value="<?php echo $item['pprice'] ?>">
+                                                        <input type="hidden" name="pimage" value="<?php echo $item['pimage'] ?>">
+                                                        <input type="hidden" name="pdesc" value="<?php echo $item['pdesc'] ?>">
+                                                        <input type="hidden" name="pstatus" value="<?php echo $item['pstatus'] ?>">
+                                                        <input type="hidden" name="catid" value="<?php echo $item['catid'] ?>">
+                                                    </form>
+                                                    <span class="home-product-item__action-rating" style="font-size: 1.4rem;">
+                                                        <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                        <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                        <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                        <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="home-product-item__favourite">
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <span>Yêu thích</span>
+                                                </div>
+                                                <div class="home-product-item__sale">
+                                                    <span class="home-product-item__sale-percent">20%
+                                                    </span>
+                                                    <span class="home-product-item__sale-label">GIẢM</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <?php }
+                                } else {
+                                    foreach ($rows as $row) //lặp từng dòng
+                                    {
+                                        $hinhanh = $row["pimage"] == "" ? "no-image.png" : $row["pimage"];
+                                        $_SESSION['pid'][$row['pid']] = $row['pid'];
+                                        if (isset($_GET['id']) && $_GET['id'] >= 0) {
+                                            if ($row['catid'] == $_GET['id']) {
+                                        ?>
+                                                <div class="col l-2-4 m-4 c-6">
+                                                    <a class="home-product-item" href="#" style="padding-bottom: 10px;">
+                                                        <div class="home-product-item__img" style="
                                                     background-image: url(./assets/img/<?= $row['pimage'] ?>);
                                                 "></div>
-                                            <h4 class="home-product-item__name">
-                                                <?= $row['pname'] ?>
-                                            </h4>
-                                            <div class="home-product-item__price">
-                                                <span class="home-product-item__price-old">1.200.000đ</span>
-                                                <span class="home-product-item__price-current"><?= $row['pprice'] ?></span>
-                                            </div>
-                                            <div class="home-product-item__action">
-                                                <span class="home-product-item__action-like home-product-item__action-like--liked">
-                                                    <i class="home-product-item__action-like-empty fa-regular fa-heart"></i>
-                                                    <i class="home-product-item__action-like-full fa-solid fa-heart"></i>
-                                                </span>
-                                                <span class="home-product-item__action-rating">
-                                                    <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                    <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                    <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                    <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                </span>
-                                                <span class="home-product-item__sold">88 đã bán</span>
-                                            </div>
-                                            <div class="home-product-item__origin">
-                                                <div class="home-product-item__brand">
-                                                    Ohui
+                                                        <h4 class="home-product-item__name">
+                                                            <?= $row['pname'] ?>
+                                                        </h4>
+                                                        <div class="home-product-item__price">
+                                                            <span class="home-product-item__price-old">1.200.000đ</span>
+                                                            <span class="home-product-item__price-current"><?= $row['pprice'] ?></span>
+                                                        </div>
+                                                        <div class="home-product-item__action">
+                                                            <form action="./assets/php/addCart.php" method="post">
+
+                                                                <input type="submit" name="addcart" id="addcart" value="Them" class="home-product-item__action-like home-product-item__action-like--liked add" style="cursor: pointer;">
+                                                                <!-- <i class="home-product-item__action-like fa-solid fa-cart-shopping" style="color: aqua; font-size: 2rem;"></i> -->
+                                                                </input>
+                                                                <input type="hidden" name="pname" value="<?php echo $row['pname'] ?>">
+                                                                <input type="hidden" name="pprice" value="<?php echo $row['pprice'] ?>">
+                                                                <input type="hidden" name="pimage" value="<?php echo $row['pimage'] ?>">
+                                                                <input type="hidden" name="pdesc" value="<?php echo $row['pdesc'] ?>">
+                                                                <input type="hidden" name="pstatus" value="<?php echo $row['pstatus'] ?>">
+                                                                <input type="hidden" name="catid" value="<?php echo $row['catid'] ?>">
+                                                            </form>
+                                                            <span class="home-product-item__action-rating" style="font-size: 1.4rem;">
+                                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                                <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                                <i class="fa-solid fa-star"></i>
+                                                            </span>
+                                                        </div>
+                                                        <div class="home-product-item__favourite">
+                                                            <i class="fa-solid fa-check"></i>
+                                                            <span>Yêu thích</span>
+                                                        </div>
+                                                        <div class="home-product-item__sale">
+                                                            <span class="home-product-item__sale-percent">20%
+                                                            </span>
+                                                            <span class="home-product-item__sale-label">GIẢM</span>
+                                                        </div>
+                                                    </a>
                                                 </div>
-                                                <div class="home-product-item__origin-name">
-                                                    Hàn Quốc
+                                            <?php } else { ?>
+                                                <div class="col l-12 m-4 c-6" style="text-align: center;">
+                                                    <h1>Khong co san pham</h1>
                                                 </div>
+                                            <?php break;
+                                            } ?>
+                                        <?php } else {
+
+                                        ?>
+                                            <div class="col l-2-4 m-4 c-6">
+                                                <a class="home-product-item" href="#" style="padding-bottom: 10px;">
+                                                    <div class="home-product-item__img" style="
+                                                    background-image: url(./assets/img/<?= $row['pimage'] ?>);
+                                                "></div>
+                                                    <h4 class="home-product-item__name">
+                                                        <?= $row['pname'] ?>
+                                                    </h4>
+                                                    <div class="home-product-item__price">
+                                                        <span class="home-product-item__price-old">1.200.000đ</span>
+                                                        <span class="home-product-item__price-current"><?= $row['pprice'] ?></span>
+                                                    </div>
+                                                    <div class="home-product-item__action">
+                                                        <form action="./assets/php/addCart.php" method="post">
+
+                                                            <input type="submit" name="addcart" id="addcart" value="Them" class="home-product-item__action-like home-product-item__action-like--liked add" style="cursor: pointer;">
+                                                            <!-- <i class="home-product-item__action-like fa-solid fa-cart-shopping" style="color: aqua; font-size: 2rem;"></i> -->
+                                                            </input>
+                                                            <input type="hidden" name="pname" value="<?php echo $row['pname'] ?>">
+                                                            <input type="hidden" name="pprice" value="<?php echo $row['pprice'] ?>">
+                                                            <input type="hidden" name="pimage" value="<?php echo $row['pimage'] ?>">
+                                                            <input type="hidden" name="pdesc" value="<?php echo $row['pdesc'] ?>">
+                                                            <input type="hidden" name="pstatus" value="<?php echo $row['pstatus'] ?>">
+                                                            <input type="hidden" name="catid" value="<?php echo $row['catid'] ?>">
+                                                        </form>
+                                                        <span class="home-product-item__action-rating" style="font-size: 1.4rem;">
+                                                            <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                            <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                            <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                            <i class="home-product-item__action-rating-gold fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="home-product-item__favourite">
+                                                        <i class="fa-solid fa-check"></i>
+                                                        <span>Yêu thích</span>
+                                                    </div>
+                                                    <div class="home-product-item__sale">
+                                                        <span class="home-product-item__sale-percent">20%
+                                                        </span>
+                                                        <span class="home-product-item__sale-label">GIẢM</span>
+                                                    </div>
+                                                </a>
                                             </div>
-                                            <div class="home-product-item__favourite">
-                                                <i class="fa-solid fa-check"></i>
-                                                <span>Yêu thích</span>
-                                            </div>
-                                            <div class="home-product-item__sale">
-                                                <span class="home-product-item__sale-percent">20%
-                                                </span>
-                                                <span class="home-product-item__sale-label">GIẢM</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                <?php } ?>
+                                        <?php } ?>
+                                    <?php } ?>
+                                <?php
+                                } ?>
 
                                 <!-- <div class="col l-2-4 m-4 c-6">
                                     <a class="home-product-item" href="#">

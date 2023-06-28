@@ -13,9 +13,9 @@ class clsProduct extends clsDatabase
     function getList()
     {
         $sql = "SELECT P.*, Cat.catname From tbProduct P Inner join tbCategory Cat on P.catid=Cat.catid";
-        $ketqua = $this->RunSQL($sql, NULL); //goi ham thuc thi SQL ke thua tu clsDatabase
+        $ketqua = $this->RunSQL($sql, NULL);
         if ($ketqua == true) {
-            $this->data = $this->pdo_stm->fetchAll(); //lay du lieu gan cho thuoc tinh data
+            $this->data = $this->pdo_stm->fetchAll();
         }
         return $ketqua;
     }
@@ -23,9 +23,19 @@ class clsProduct extends clsDatabase
     {
         $sql = "SELECT P.*, Cat.catname From tbProduct P Inner join tbCategory Cat on P.catid=Cat.catid where P.pid=?";
         $param = [$pid];
-        $ketqua = $this->RunSQL($sql, $param); //goi ham thuc thi SQL ke thua tu clsDatabase
+        $ketqua = $this->RunSQL($sql, $param);
         if ($ketqua == true) {
-            $this->data = $this->pdo_stm->fetch(); //lay du lieu gan cho thuoc tinh data
+            $this->data = $this->pdo_stm->fetch();
+        }
+        return $ketqua;
+    }
+    function getListByName($pname)
+    {
+        $sql = "SELECT P.*, Cat.catname From tbProduct P Inner join tbCategory Cat on P.catid=Cat.catid where P.pname=?";
+        $param = [$pname];
+        $ketqua = $this->RunSQL($sql, $param);
+        if ($ketqua == true) {
+            $this->data = $this->pdo_stm->fetchAll();
         }
         return $ketqua;
     }
@@ -33,21 +43,21 @@ class clsProduct extends clsDatabase
     {
         $sql = "INSERT into tbProduct values(null,?,?,?,?,?,?)";
         $param = [$pname, $pprice, $pimage, $pdesc, $pstatus, $catid];
-        $ketqua = $this->RunSQL($sql, $param); //goi ham thuc thi SQL ke thua tu clsDatabase
+        $ketqua = $this->RunSQL($sql, $param);
         return $ketqua;
     }
     function Update($pid, $pname, $pprice, $pimage, $pdesc, $pstatus, $catid)
     {
         $sql = "UPDATE tbProduct set pname=?, pprice=?, pimage=?, pdesc=?, pstatus=?, catid=? where pid=?";
         $param = [$pname, $pprice, $pimage, $pdesc, $pstatus, $catid, $pid];
-        $ketqua = $this->RunSQL($sql, $param); //goi ham thuc thi SQL ke thua tu clsDatabase
+        $ketqua = $this->RunSQL($sql, $param);
         return $ketqua;
     }
     function Delete($pid)
     {
         $sql = "Delete from tbProduct where pid=?";
         $param = [$pid];
-        $ketqua = $this->RunSQL($sql, $param); //goi ham thuc thi SQL ke thua tu clsDatabase
+        $ketqua = $this->RunSQL($sql, $param);
         return $ketqua;
     }
 }

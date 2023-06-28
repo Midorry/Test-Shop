@@ -17,7 +17,7 @@ if (isset($_REQUEST["submit"])) {
     $product = new clsProduct();
     $result = $product->Update($pid, $pname, $pprice, $pimage, $pdesc, $pstatus, $catid);
     if ($result == true) {
-        echo "<h3>Thành công</h3>";
+        header("Location: ../../productList.php");
     } else {
         echo "<h3>Lỗi sửa dữ liệu</h3>";
     }
